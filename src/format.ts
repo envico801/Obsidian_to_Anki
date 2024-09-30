@@ -6,15 +6,18 @@ import * as c from './constants';
 
 import showdownHighlight from 'showdown-highlight';
 
-const ANKI_MATH_REGEXP: RegExp = /(\\\[[\s\S]*?\\\])|(\\\([\s\S]*?\\\))/g;
-const HIGHLIGHT_REGEXP: RegExp = /==(.*?)==/g;
+// const ANKI_MATH_REGEXP: RegExp = /(\\\[[\s\S]*?\\\])|(\\\([\s\S]*?\\\))/g;
+const ANKI_MATH_REGEXP: RegExp = /@#@#SWAPMEBB@#@/g;
+
+// const HIGHLIGHT_REGEXP: RegExp = /==(.*?)==/g;
+const HIGHLIGHT_REGEXP: RegExp = /@#@#SWAPMEBB@#@/g;
 
 const MATH_REPLACE: string = 'OBSTOANKIMATH';
 const INLINE_CODE_REPLACE: string = 'OBSTOANKICODEINLINE';
 const DISPLAY_CODE_REPLACE: string = 'OBSTOANKICODEDISPLAY';
 
-const CLOZE_REGEXP: RegExp =
-	/(?:(?<!{){(?:c?(\d+)[:|])?(?!{))((?:[^\n][\n]?)+?)(?:(?<!})}(?!}))/g;
+// const CLOZE_REGEXP: RegExp = /(?:(?<!{){(?:c?(\d+)[:|])?(?!{))((?:[^\n][\n]?)+?)(?:(?<!})}(?!}))/g;
+const CLOZE_REGEXP: RegExp = /@#@#SWAPMEBB@#@/g;
 
 const IMAGE_EXTS: string[] = [
 	'.png',
@@ -47,7 +50,7 @@ let converter: Converter = new Converter({
 	tasklists: true,
 	simpleLineBreaks: true,
 	requireSpaceBeforeHeadingText: true,
-	extensions: [showdownHighlight],
+	extensions: [showdownHighlight({ pre: true, auto_detection: true })],
 });
 
 function escapeHtml(unsafe: string): string {
