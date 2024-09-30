@@ -134,13 +134,12 @@ export class FormatConverter {
 		return [note_text.replace(regexp, mask), matches]
 	}
 
-	decensor(note_text: string, mask:string, replacements: string[], escape: boolean): string {
-		for (let replacement of replacements) {
-			note_text = note_text.replace(
-				mask, escape ? escapeHtml(replacement) : replacement
-			)
-		}
-		return note_text
+	decensor(note_text: string, mask: string, replacements: string[], escape: boolean): string {
+		let i = 0;
+		return note_text.replace(new RegExp(mask, 'g'), (): string => {
+			let replacement: string = replacements[i++];
+			return escape ? escapeHtml(replacement) : replacement;
+		});
 	}
 
 	format(note_text: string, cloze: boolean, highlights_to_cloze: boolean): string {
