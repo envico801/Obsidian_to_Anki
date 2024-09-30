@@ -186,13 +186,11 @@ export class FormatConverter {
 		replacements: string[],
 		escape: boolean,
 	): string {
-		for (let replacement of replacements) {
-			note_text = note_text.replace(
-				mask,
-				escape ? escapeHtml(replacement) : replacement,
-			);
-		}
-		return note_text;
+		let i = 0;
+		return note_text.replace(new RegExp(mask, 'g'), (): string => {
+			let replacement: string = replacements[i++];
+			return escape ? escapeHtml(replacement) : replacement;
+		});
 	}
 
 	format(
