@@ -135,11 +135,27 @@ export class FormatConverter {
 	}
 
 	decensor(note_text: string, mask: string, replacements: string[], escape: boolean): string {
-		let i = 0;
-		return note_text.replace(new RegExp(mask, 'g'), (): string => {
-			let replacement: string = replacements[i++];
+		let index = 0;
+
+		// note_text example: "The OBSTOANKICODEDISPLAY is worth OBSTOANKICODEDISPLAY today"
+		// maskGlobalReg example: /OBSTOANKICODEDISPLAY/g
+		const maskGlobalRegex: RegExp = new RegExp(mask, 'g');
+
+		const matchCount: number = (note_text.match(maskGlobalRegex) || []).length;
+
+		// Validate that we have exactly enough replacements
+		if (matchCount !== replacements.length) {
+			throw new Error(`Mismatch between placeholders (${matchCount}) and replacements (${replacements.length})`);
+		}
+
+		// replacements example: ["10", "15"]
+		note_text = note_text.replace(maskGlobalRegex, () => {
+			const replacement: string = replacements[index++];
 			return escape ? escapeHtml(replacement) : replacement;
 		});
+
+		// note_text expected: "The 10 is worth 15 today"
+		return note_text;
 	}
 
 	format(note_text: string, cloze: boolean, highlights_to_cloze: boolean): string {
