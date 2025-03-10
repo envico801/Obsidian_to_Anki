@@ -13,7 +13,8 @@ export const OBS_DISPLAY_CODE_REGEXP: RegExp = /```[\s\S]*?```/g;
 // export const OBS_DISPLAY_CODE_REGEXP: RegExp = /@#@#SWAPMEBB@#@/g;
 
 // export const CODE_CSS_URL = `https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/arta.css`;
-export const CODE_CSS_URL = `https://cdn.jsdelivr.net/gh/envico801/anki-config@main/cards/basic/styling.min.css`;
+// export const CODE_CSS_URL = `https://cdn.jsdelivr.net/gh/envico801/anki-config@main/cards/basic/styling.min.css`;
+export const CODE_CSS_URL = ``;
 
 export function escapeRegex(str: string): string {
 	// Got from stackoverflow - https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
