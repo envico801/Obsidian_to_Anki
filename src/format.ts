@@ -50,7 +50,8 @@ let converter: Converter = new Converter({
 	tasklists: true,
 	simpleLineBreaks: true,
 	requireSpaceBeforeHeadingText: true,
-	extensions: [showdownHighlight({ pre: true, auto_detection: true })],
+	splitAdjacentBlockquotes: true,
+	extensions: [showdownHighlight({ pre: true, auto_detection: false })],
 });
 
 function escapeHtml(unsafe: string): string {
