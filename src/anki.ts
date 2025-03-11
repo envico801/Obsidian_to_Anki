@@ -1,5 +1,4 @@
 const ANKI_PORT: number = 8765;
-
 import { AnkiConnectNote } from './interfaces/note-interface';
 
 export interface AnkiConnectRequest {
@@ -8,34 +7,35 @@ export interface AnkiConnectRequest {
 	params: any;
 }
 
-export function invoke(action: string, params = {}) {
-	return new Promise((resolve, reject) => {
-		const xhr = new XMLHttpRequest();
-		xhr.addEventListener('error', () => reject('failed to issue request'));
-		xhr.addEventListener('load', () => {
-			try {
-				const response = JSON.parse(xhr.responseText);
-				if (Object.getOwnPropertyNames(response).length != 2) {
-					throw 'response has an unexpected number of fields';
-				}
-				if (!response.hasOwnProperty('error')) {
-					throw 'response is missing required error field';
-				}
-				if (!response.hasOwnProperty('result')) {
-					throw 'response is missing required result field';
-				}
-				if (response.error) {
-					throw response.error;
-				}
-				resolve(response.result);
-			} catch (e) {
-				reject(e);
-			}
-		});
+/**
+ * AnkiConnect API interface module
+ */
 
-		xhr.open('POST', 'http://127.0.0.1:' + ANKI_PORT.toString());
-		xhr.send(JSON.stringify({ action, version: 6, params }));
+/**
+ * Invoke AnkiConnect API with specified action and parameters
+ */
+export async function invoke(
+	action: string,
+	params: Record<string, any> = {},
+): Promise<any> {
+	const version = 6;
+	const payload = { action, version, params };
+
+	const response = await fetch('http://localhost:8765', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(payload),
 	});
+
+	const responseJson = await response.json();
+
+	if (responseJson.error) {
+		throw new Error(`AnkiConnect error: ${responseJson.error}`);
+	}
+
+	return responseJson.result;
 }
 
 export function parse<T>(response: { error: string; result: T }): T {
